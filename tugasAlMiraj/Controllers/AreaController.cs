@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -12,6 +14,7 @@ namespace tugasAlMiraj.Controllers
 {
     public class AreaController : Controller
     {
+        string conString = ConfigurationManager.ConnectionStrings["koneksi"].ToString();
         areasDAL _areasDAL = new areasDAL();
 
         // GET: Area
@@ -21,35 +24,20 @@ namespace tugasAlMiraj.Controllers
             return View();
         }
 
-        [HttpPost]
-        public ActionResult Create(areaModel areaModel)
+        public JsonResult SaveData(areaModel areaModel)
         {
-
-            bool isInserted = false;
-
-            try
+            using (SqlConnection sqlConnection = new SqlConnection(conString))
             {
-                if (ModelState.IsValid)
-                {
-                    isInserted = _areasDAL.insertArea(areaModel);
+                sqlConnection.Open();
 
-                    if (isInserted)
-                    {
-                        TempData["SuccessMessagae"] = "Successfully...";
-                    }
-                    else
-                    {
-                        TempData["ErrorMessagae"] = "Unable to Add";
-                    }
-                }
-                return RedirectToAction("Index");
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMessagae"] = ex.Message;
+                SqlCommand sqlCommand = new SqlCommand("area_create @name, @description, 1", sqlConnection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("@name", areaModel.name);
+                sqlCommand.Parameters.AddWithValue("@description", areaModel.description);
+                sqlCommand.ExecuteNonQuery();
 
-                return View();
             }
+            return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
         }
     }
 }

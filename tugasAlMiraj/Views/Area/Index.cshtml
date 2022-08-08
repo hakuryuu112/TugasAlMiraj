@@ -1,4 +1,4 @@
-﻿@model List<tugasAlMiraj.Models.areaModel>
+﻿@model IEnumerable<tugasAlMiraj.Models.areaModel>
 
 @{
     ViewBag.Title = "Area";
@@ -19,13 +19,15 @@
 
             <div class="modal-body">
                 <form action="#" id="FormData" method="post">
-                    @Html.TextBoxFor(model => area.name, new { @class = "form-control", placeholder = "Name" })
-                    @Html.TextBoxFor(model => area.description, new { @class = "form-control", placeholder = "Description" })
+                    <label>Name</label>
+                    @Html.TextBoxFor(model => area.name, new { @class = "form-control", placeholder = "Name", @id="txtName" })
+                    <label>Description</label>
+                    @Html.TextBoxFor(model => area.description, new { @class = "form-control", placeholder = "Description", @id="txtDescription" })
                 </form>
             </div>
 
             <div class="modal-footer">
-                <a href="#" class="btn btn-primary" id="btn_add">Add New</a>
+                <a href="#" class="btn btn-primary" id="btn_add" onclick="SaveData()">Add New</a>
                 <a href="#" class="btn btn-danger" data-dismiss="modal">Close</a>
             </div>
         </div>
@@ -34,6 +36,7 @@
 </div>
 
 <table class="table table-bordered table-striped table-hover">
+    <tr class="btn-primary">
     <thead>
 
         <tr>
@@ -44,27 +47,59 @@
     </thead>
 
     <tbody>
+
     </tbody>
 </table>
 
 @section scripts
 {
     <script>
-            $(document).ready(function () {
-                $("#btn_add").click(function () {
-                    var DataForm = $("#FormData").serialize();
+        function SaveData() {
+            var areaModel = {
+                name: $("#txtName").val(),
+                description: $("#txtDescription").val()
+            }
 
-                    $.ajax({
-                        type: "POST",
-                        url: "/Area/Create",
-                        data: DataForm,
+            swal({
+                title: "Save data?",
+                text: "Are you sure want to save data?",
+                buttons: {
+                    save: {
+                        text: "Save!",
+                        value: "save",
+                    },
+                    cancel: "No, Cancel",
+                },
+            }).then(function (value) {
+                switch (value) {
+                    case "save":
+                        $.ajax({
+                            async: true,
+                            type: 'POST',
+                            url: '/Area/SaveData',
+                            data: JSON.stringify(areaModel),
+                            dataType: 'JSON',
+                            contentType: 'aplication/json; charset=utf-8',
+                            success: function (data) {
+                                if (data.success) {
+                                    $('#FormModalArea').modal('hide');
+                                    location.reload();
+                                    swal("Success!", "Save Data Successfully!", "success")
+                                }
+                                else {
+                                    swal("Error!", "Failed To Save Data!", "error");
 
-                        success: function () {
-                            window.location.href = '/Area/Index';
-                        }
-                    })
-                })
-                return true;
-            })
+                                    if (!$('#FormData').valid()) {
+                                        return false;
+                                    }
+                                }
+                            },
+                            error: function () {
+                                alert('There is some problem!')
+                            }
+                        });
+                }
+            });
+        }
     </script>
 }
