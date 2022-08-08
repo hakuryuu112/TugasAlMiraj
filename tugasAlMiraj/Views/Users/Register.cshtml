@@ -1,0 +1,170 @@
+﻿@model tugasAlMiraj.Models.masterModel.usersModel
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/_LayoutPage1.cshtml";
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        <strong>Error ! </strong> @TempData["ErrorMessage"]
+
+        <button type="button" class="close" data-dismiss="alert" aria-label="close">
+            <span>&times;</span>
+        </button>
+    </div>
+}
+
+<!--A Design by W3layouts
+Author: W3layout
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Login Form</title>
+    <!-- meta tags -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="Art Sign Up Form Responsive Widget, Audio and Video players, Login Form Web Template, Flat Pricing Tables, Flat Drop-Downs, Sign-Up Web Templates,
+		Flat Web Templates, Login Sign-up Responsive Web Template, Smartphone Compatible Web Template, Free Web Designs for Nokia, Samsung, LG, Sony Ericsson, Motorola Web Design" />
+    <!-- /meta tags -->
+    <!-- custom style sheet -->
+    <link href="~/css/style.css" rel="stylesheet" />
+    <!-- /custom style sheet -->
+    <!-- fontawesome css -->
+    <link href="~/css/fontawesome-all.css" rel="stylesheet" />
+    <!-- /fontawesome css -->
+    <!-- google fonts-->
+    <link href="//fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
+    <!-- /google fonts-->
+
+</head>
+
+
+<body>
+    <h1>Register Form</h1>
+    <div class=" w3l-login-form">
+        <h2>Register Here</h2>
+        <form action="Register" method="POST">
+
+            <div class=" w3l-form-group">
+                <label>Username :</label>
+                <div class="group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Username" required="required" />
+                </div>
+            </div>
+            <div class=" w3l-form-group">
+                <label>Name :</label>
+                <div class="group">
+                    <i class="fas fa-user-md"></i>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Name" required="required" />
+                </div>
+            </div>
+            <div class=" w3l-form-group">
+                <label>Email :</label>
+                <div class="group">
+                    <i class="fas fa-envelope-open"></i>
+                    <input type="text" class="form-control" id="email" name="email" placeholder="Email" required="required" />
+                </div>
+            </div>
+            <div class=" w3l-form-group">
+                <label>Password :</label>
+                <div class="group">
+                    <i class="fas fa-unlock"></i>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" required="required" />
+                </div>
+            </div>
+
+            <div class=" w3l-form-group">
+                <label>Address :</label>
+                <div class="group">
+                    <i class="fas fa-location-arrow"></i>
+                    <input type="text" class="form-control" id="address" name="address" placeholder="Address" required="required" />
+                </div>
+            </div>
+            <div class=" w3l-form-group">
+                <label>Telephone :</label>
+                <div class="group">
+                    <i class="fas fa-phone"></i>
+                    <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Telephone" required="required" />
+                </div>
+            </div>
+
+            <div class="forgot">
+                <a href="#">Forgot Password?</a>
+            </div>
+            <button type="submit" id="btnRegister">Register</button>
+        </form>
+        <p class=" w3l-register-p">Have an account?<a href="Login" class="login"> Login</a></p>
+    </div>
+    <footer>
+        <p class="copyright-agileinfo"> &copy; 2018 Material Login Form. All Rights Reserved | Design by <a href="http://w3layouts.com">W3layouts</a></p>
+    </footer>
+
+</body>
+
+</html>
+<script src="~/Scripts/jquery-3.6.0.min.js"></script>
+<!-- <script type="text/javascript">
+    $("[id$=btnRegister]").on("click", function () {
+        var valid = 0;
+
+        if ($("[id$=username]").val() == "") {
+            alert("Enter Username!");
+            $("[id$=username]").focus();
+            valid = 1;
+            return;
+        }
+        if ($("[id$=name]").val() == "") {
+            alert("Enter Name!");
+            $("[id$=name]").focus();
+            valid = 1;
+            return;
+        }
+        if ($("[id$=emaill]").val() == "") {
+            alert("Enter Email!");
+            $("[id$=email]").focus();
+            valid = 1;
+            return;
+        }
+        if ($("[id$=password]").val() == "") {
+            alert("Enter Password!");
+            $("[id$=password]").focus();
+            valid = 1;
+            return;
+        }
+        if ($("[id$=address]").val() == "") {
+            alert("Enter Address!");
+            $("[id$=address]").focus();
+            valid = 1;
+            return;
+        }
+        if ($("[id$=telephone]").val() == "") {
+            alert("Enter Telephone!");
+            $("[id$=telephone]").focus();
+            valid = 1;
+            return;
+        }
+
+        if (valid == 0) {
+            $.ajax({
+                type: "POST",
+                url: "/Register",
+                contentType: "application/json; charset=utf-8",
+                dataType: "Json",
+                success: function (response) {
+
+                },
+                error: function (response) {
+                    alert(response.toString());
+                }
+            });
+        }
+    });
+</script> -->

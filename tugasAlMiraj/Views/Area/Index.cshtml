@@ -1,0 +1,70 @@
+﻿@model List<tugasAlMiraj.Models.areaModel>
+
+@{
+    ViewBag.Title = "Area";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var area = ViewBag.Model as tugasAlMiraj.Models.areaModel;
+}
+
+<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#FormModalArea">Add New</a>
+<div class="modal fade" id="FormModalArea">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title center-block">Add New</h3>
+            </div>
+
+            <div class="modal-body">
+                <form action="#" id="FormData" method="post">
+                    @Html.TextBoxFor(model => area.name, new { @class = "form-control", placeholder = "Name" })
+                    @Html.TextBoxFor(model => area.description, new { @class = "form-control", placeholder = "Description" })
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <a href="#" class="btn btn-primary" id="btn_add">Add New</a>
+                <a href="#" class="btn btn-danger" data-dismiss="modal">Close</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<table class="table table-bordered table-striped table-hover">
+    <thead>
+
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    </tbody>
+</table>
+
+@section scripts
+{
+    <script>
+            $(document).ready(function () {
+                $("#btn_add").click(function () {
+                    var DataForm = $("#FormData").serialize();
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/Area/Create",
+                        data: DataForm,
+
+                        success: function () {
+                            window.location.href = '/Area/Index';
+                        }
+                    })
+                })
+                return true;
+            })
+    </script>
+}
