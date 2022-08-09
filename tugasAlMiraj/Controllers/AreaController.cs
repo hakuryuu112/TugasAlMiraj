@@ -24,20 +24,47 @@ namespace tugasAlMiraj.Controllers
             return View();
         }
 
-        public JsonResult SaveData(areaModel areaModel)
+        public JsonResult Create(areaModel areaModel)
         {
-            using (SqlConnection sqlConnection = new SqlConnection(conString))
+            bool isInserted = false;
+
+            try
             {
-                sqlConnection.Open();
+                if (ModelState.IsValid)
+                {
+                    isInserted = _areasDAL.insertArea(areaModel);
 
-                SqlCommand sqlCommand = new SqlCommand("area_create @name, @description, 1", sqlConnection);
-                sqlCommand.CommandType = CommandType.StoredProcedure;
-                sqlCommand.Parameters.AddWithValue("@name", areaModel.name);
-                sqlCommand.Parameters.AddWithValue("@description", areaModel.description);
-                sqlCommand.ExecuteNonQuery();
+                    using (SqlConnection sqlConnection = new SqlConnection(conString))
+                    {
+                        var example = areaModel.name;
+                        sqlConnection.Open();
 
+                        SqlCommand sqlCommand = new SqlCommand("area_create", sqlConnection);
+                        sqlCommand.CommandType = CommandType.StoredProcedure;
+                        sqlCommand.Parameters.AddWithValue("@name", areaModel.name);
+                        sqlCommand.Parameters.AddWithValue("@description", areaModel.description);
+
+                        sqlCommand.ExecuteNonQuery();
+                        sqlConnection.Close();
+                    }
+
+                    if (isInserted)
+                    {
+                        TempData["SuccessMessagae"] = "Add Successfully";
+                    }
+                    else
+                    {
+                        TempData["ErrorMessagae"] = "Unable to Add";
+                    }
+                }
+                return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
             }
-            return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
+            catch (Exception ex)
+            {
+                TempData["ErrorMessagae"] = ex.Message;
+
+                return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
+            }
         }
     }
 }

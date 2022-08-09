@@ -1,14 +1,16 @@
-﻿@model IEnumerable<tugasAlMiraj.Models.areaModel>
+﻿@model tugasAlMiraj.Models.masterModel.areaModel
 
 @{
     ViewBag.Title = "Area";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var area = ViewBag.Model as tugasAlMiraj.Models.areaModel;
+    var area = ViewBag.Model as tugasAlMiraj.Models.masterModel.areaModel;
 }
+
+<script src="~/js/jquery-2.1.4.min.js"></script>
 
 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#FormModalArea">Add New</a>
 <div class="modal fade" id="FormModalArea">
-    <div class="modal-dialog">
+    <div class="modal-dialog" id="haha">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="close">
@@ -20,14 +22,14 @@
             <div class="modal-body">
                 <form action="#" id="FormData" method="post">
                     <label>Name</label>
-                    @Html.TextBoxFor(model => area.name, new { @class = "form-control", placeholder = "Name", @id="txtName" })
+                    @Html.TextBoxFor(model => model.name, new { @class = "form-control", placeholder = "Name", @type = "text", @id = "txtName" })
                     <label>Description</label>
-                    @Html.TextBoxFor(model => area.description, new { @class = "form-control", placeholder = "Description", @id="txtDescription" })
+                    @Html.TextBoxFor(model => model.description, new { @class = "form-control", placeholder = "Description", @type = "text", @id = "txtDescription" })
                 </form>
             </div>
 
             <div class="modal-footer">
-                <a href="#" class="btn btn-primary" id="btn_add" onclick="SaveData()">Add New</a>
+                <a href="#" class="btn btn-primary" id="btn_add" onclick="saveData()">Add New</a>
                 <a href="#" class="btn btn-danger" data-dismiss="modal">Close</a>
             </div>
         </div>
@@ -47,18 +49,15 @@
     </thead>
 
     <tbody>
-
     </tbody>
 </table>
 
 @section scripts
 {
     <script>
-        function SaveData() {
-            var areaModel = {
-                name: $("#txtName").val(),
-                description: $("#txtDescription").val()
-            }
+
+        function saveData() {
+            var DataForm = $("#FormData").serialize();
 
             swal({
                 title: "Save data?",
@@ -74,32 +73,30 @@
                 switch (value) {
                     case "save":
                         $.ajax({
-                            async: true,
-                            type: 'POST',
-                            url: '/Area/SaveData',
-                            data: JSON.stringify(areaModel),
-                            dataType: 'JSON',
-                            contentType: 'aplication/json; charset=utf-8',
+                            type: "POST",
+                            url: "/Area/Create",
+                            data: DataForm,
                             success: function (data) {
-                                if (data.success) {
+                                if (data.Success) {
                                     $('#FormModalArea').modal('hide');
                                     location.reload();
-                                    swal("Success!", "Save Data Successfully!", "success")
+                                    swal("Success!", "Save data sucessfully!", "success");
                                 }
                                 else {
-                                    swal("Error!", "Failed To Save Data!", "error");
-
-                                    if (!$('#FormData').valid()) {
+                                    swal("Error!", "Failed to save data!", "error");
+                                    if (!$("#inputan").valid()) {
                                         return false;
                                     }
                                 }
                             },
                             error: function () {
-                                alert('There is some problem!')
+                                alert('There is some problem to add update.');
                             }
                         });
                 }
             });
+            return true;
         }
+
     </script>
 }
